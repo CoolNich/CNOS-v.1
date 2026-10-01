@@ -16,7 +16,7 @@ jobs:
           apt-get update
           apt-get install -y live-build debootstrap xorriso squashfs-tools ca-certificates
       - name: Build ISO
-        run: ./build.sh
+        run: bash ./build.sh
       - name: Checksums
         run: sha256sum CNOS-amd64.iso > SHA256SUMS
       - uses: actions/upload-artifact@v4
