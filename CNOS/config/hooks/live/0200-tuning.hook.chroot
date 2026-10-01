@@ -1,0 +1,22 @@
+#!/bin/bash
+# Performance / anti-lag tuning
+set -e
+cat > /etc/sysctl.d/99-cnos.conf <<'EOT'
+vm.swappiness = 10
+vm.vfs_cache_pressure = 50
+vm.max_map_count = 2147483642
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
+EOT
+cat > /etc/default/zramswap <<'EOT'
+ALGO=zstd
+PERCENT=50
+PRIORITY=100
+EOT
+cat > /etc/udev/rules.d/60-ioschedulers.rules <<'EOT'
+ACTION=="add|change", KERNEL=="nvme[0-9]*n[0-9]*", ATTR{queue/scheduler}="none"
+ACTION=="add|change", KERNEL=="sd[a-z]|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
+EOT
+systemctl enable zramswap.service || true
+systemctl enable cnos-firstboot.service || true
