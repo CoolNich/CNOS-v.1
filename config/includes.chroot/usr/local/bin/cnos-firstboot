@@ -1,0 +1,5 @@
+#!/bin/bash
+# Installs Bottles (best .exe manager) and OnlyOffice once, when online
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install -y flathub com.usebottles.bottles org.onlyoffice.desktopeditors
+mkdir -p /var/lib/cnos && touch /var/lib/cnos/firstboot.done
