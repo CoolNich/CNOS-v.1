@@ -1,6 +1,0 @@
-#!/bin/bash
-# 32-bit Wine + Steam (Proton) support
-set -e
-dpkg --add-architecture i386
-apt-get update
-apt-get install -y wine32:i386 steam-installer mesa-vulkan-drivers:i386 libgl1-mesa-dri:i386
